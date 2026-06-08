@@ -680,11 +680,15 @@ function LoginForm({ onSuccess, addToast }: {
 }
 
 // ─── Signup Form (Multi-step) ─────────────────────────────
-function SignupForm({ onSuccess, onShowOTP, addToast }: {
-  onSuccess: () => void;
+// function SignupForm({ onSuccess, onShowOTP, addToast }: {
+//   onSuccess: () => void;
+//   onShowOTP: () => void;
+//   addToast: (t: Omit<Toast, 'id'>) => void;
+// }) 
+function SignupForm({ onShowOTP, addToast }: {
   onShowOTP: () => void;
   addToast: (t: Omit<Toast, 'id'>) => void;
-}) {
+}){
   const [step, setStep] = useState(1);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -751,7 +755,8 @@ function SignupForm({ onSuccess, onShowOTP, addToast }: {
 
       {/* Multi-step progress indicator */}
       <div className="signup-steps" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={3}>
-        {steps.map((s, i) => (
+        {/* {steps.map((s, i) => ( */}
+        {steps.map((s) => (
           <div key={s.num} className={`step-item ${step > s.num ? 'completed' : step === s.num ? 'active' : ''}`}>
             <div className="step-circle">
               {step > s.num ? '✓' : s.num}
@@ -979,8 +984,8 @@ function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [showOTP, setShowOTP] = useState(false);
   const [showSuccess, setShowSuccess] = useState<'login' | 'signup' | null>(null);
-  const [otpEmail, setOtpEmail] = useState('');
-
+  // const [otpEmail, setOtpEmail] = useState('');
+  const [otpEmail] = useState('');
   const addToast = useCallback((t: Omit<Toast, 'id'>) => {
     const id = generateId();
     setToasts(prev => [...prev, { ...t, id }]);
@@ -1093,7 +1098,11 @@ function AuthPage({ onAuthSuccess }: AuthPageProps) {
             {activeTab === 'login' ? (
               <LoginForm onSuccess={handleLoginSuccess} addToast={addToast} />
             ) : (
-              <SignupForm onSuccess={handleSignupOTP} onShowOTP={handleSignupOTP} addToast={addToast} />
+              // <SignupForm onSuccess={handleSignupOTP} onShowOTP={handleSignupOTP} addToast={addToast} />
+              <SignupForm
+  onShowOTP={handleSignupOTP}
+  addToast={addToast}
+/>
             )}
 
             {/* Switch link */}
